@@ -130,6 +130,7 @@ export function solveSudoku(grid) {
   // No number can be assigned, backtrack
   return false;
 }
+
 export function createBlankSpaces(grid, blankCount) {
   // Randomly remove numbers to create blank spaces
   // const blankCount = Math.floor(Math.random() * 20) + 15;
@@ -142,23 +143,50 @@ export function createBlankSpaces(grid, blankCount) {
     grid[row][col] = 0;
   }
 }
-// Example usage
-// const sudokuGrid = generateSudoku();
-// console.log(sudokuGrid);
-// createBlankSpaces(sudokuGrid, 40)
-// console.log(sudokuGrid);
+export function isValidSudoku(board) {
+  // Check rows
+  for (let i = 0; i < 9; i++) {
+    if (!isValidSet(board[i])) {
+      return false;
+    }
+  }
 
-// @ts-ignore
-const gridElement = document.getElementById("grid");
+  // Check columns
+  for (let i = 0; i < 9; i++) {
+    const column = [];
+    for (let j = 0; j < 9; j++) {
+      column.push(board[j][i]);
+    }
+    if (!isValidSet(column)) {
+      return false;
+    }
+  }
 
-// for (let i = 0; i < 9; i++) {
-//   for (let j = 0; j < 9; j++) {
-//     let inputElement = document.createElement("input");
-//     inputElement.type = "text";
-//     inputElement.classList.add("element")
-//     if (sudokuGrid[i][j] != 0)
-//       inputElement.value = sudokuGrid[i][j];
-//     gridElement.appendChild(inputElement);
-//   }
-// }
+  // Check 3x3 subgrids
+  for (let i = 0; i < 9; i += 3) {
+    for (let j = 0; j < 9; j += 3) {
+      const subgrid = [];
+      for (let x = 0; x < 3; x++) {
+        for (let y = 0; y < 3; y++) {
+          subgrid.push(board[i + x][j + y]);
+        }
+      }
+      if (!isValidSet(subgrid)) {
+        return false;
+      }
+    }
+  }
 
+  return true;
+}
+
+function isValidSet(nums) {
+  const seen = new Set();
+  for (const num of nums) {
+    if (num !== 0 && seen.has(num)) {
+      return false;
+    }
+    seen.add(num);
+  }
+  return true;
+}

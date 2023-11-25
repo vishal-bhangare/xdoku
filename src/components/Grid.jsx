@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listToMatrix, solveSudoku } from "../functions";
+import { isValidSudoku, listToMatrix, solveSudoku } from "../functions";
 
 const Grid = ({ grid }) => {
   const [solvedGrid, setSolvedGrid] = useState([[]]);
@@ -16,7 +16,9 @@ const Grid = ({ grid }) => {
   };
 
   useEffect(() => {
-    if (gridArr.length > 0) alert(solveSudoku(listToMatrix(gridArr, 9)));
+    if (gridArr.length > 0)
+      if (isValidSudoku(listToMatrix(gridArr, 9))) alert("Valid sudoku.");
+      else alert("Invalid sudoku, Try again.");
   }, [gridArr]);
   return (
     <>
