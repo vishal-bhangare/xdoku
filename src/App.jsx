@@ -4,16 +4,14 @@ import Grid from "./components/Grid";
 import { generateSudoku } from "./functions";
 
 function App() {
-  const [grid, setGrid] = useState([[]]);
+  const [grid, setGrid] = useState(generateSudoku(40));
   const generateGrid = () => {
     setGrid(() => [[]]);
     setTimeout(() => {
       setGrid(() => generateSudoku(40));
     }, 100);
   };
-  useEffect(() => {
-    generateGrid();
-  }, []);
+  useEffect(() => {}, [grid]);
   return (
     <div className=" h-screen flex flex-col items-center">
       <h1 className="text-3xl font-bold m-auto">Welcome to xdoku</h1>

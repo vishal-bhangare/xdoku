@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { isValidSudoku, listToMatrix, solveSudoku } from "../functions";
 
@@ -24,41 +25,38 @@ const Grid = ({ grid }) => {
     <>
       {grid && (
         <form onSubmit={handleSubmit}>
-          <table className="w-96 h-96 border-collapse border-2 border-slate-400 m-auto">
-            <tbody className="grid grid-cols-1 grid-rows-9 w-full h-full">
-              {grid?.map((row, idx) => (
-                <tr
-                  className={["grid grid-cols-9 grid-rows-1"].join(" ")}
-                  key={idx}
+          <div className="w-96 h-96 grid grid-cols-9 grid-row-9 m-auto bg-slate-400 p-1">
+            {grid?.map((row, i) => {
+              return row.map((item, j) => (
+                <div
+                  className={[
+                    "border border-slate-300",
+                    i % 3 == 0 && j % 3 == 0 ? "mt-0.5 ml-0.5" : "",
+                    i % 3 == 0 && j % 3 == 1 ? "mt-0.5" : "",
+                    i % 3 == 0 && j % 3 == 2 ? "mt-0.5 mr-0.5" : "",
+
+                    i % 3 == 1 && j % 3 == 0 ? "ml-0.5" : "",
+                    i % 3 == 1 && j % 3 == 2 ? "mr-0.5" : "",
+
+                    i % 3 == 2 && j % 3 == 0 ? "mb-0.5 ml-0.5" : "",
+                    i % 3 == 2 && j % 3 == 1 ? "mb-0.5" : "",
+                    i % 3 == 2 && j % 3 == 2 ? "mb-0.5 mr-0.5" : "",
+                  ].join(" ")}
                 >
-                  {row.map((item, i) => (
-                    <td
-                      className={[
-                        "border-2 border-slate-400",
-                        (i + 1) % 3 == 0 && i < 8
-                          ? "border-r-2 border-r-slate-500"
-                          : "border-slate-400",
-                        ,
-                        (idx + 1) % 3 == 0 && idx < 8
-                          ? "border-b-2 border-b-slate-500"
-                          : "border-slate-400",
-                      ].join(" ")}
-                      key={i}
-                    >
-                      <input
-                        type="text"
-                        name={"element" + (idx + 1) + "/" + (i + 1)}
-                        defaultValue={item > 0 ? item : ""}
-                        pattern="[1-9]{1}"
-                        maxLength={1}
-                        className="text-center border-none outline-none w-full h-full"
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  {
+                    <input
+                      type="text"
+                      name={"element" + (i + 1) + "/" + (j + 1)}
+                      defaultValue={item > 0 ? item : ""}
+                      pattern="[1-9]{1}"
+                      maxLength={1}
+                      className="text-center border-none outline-none w-full h-full"
+                    />
+                  }
+                </div>
+              ));
+            })}
+          </div>
           <input
             type="submit"
             value={"submit"}
